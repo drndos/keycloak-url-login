@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
     
     <properties>
-        <version.keycloak>3.4.3.Final</version.keycloak>
+        <version.keycloak>18.0.0</version.keycloak>
         <version.wildfly.maven.plugin>1.1.0.Final</version.wildfly.maven.plugin>
     </properties>
 
