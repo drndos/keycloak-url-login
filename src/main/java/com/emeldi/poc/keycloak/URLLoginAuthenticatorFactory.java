@@ -21,6 +21,7 @@ import org.keycloak.Config;
 import org.keycloak.authentication.Authenticator;
 import org.keycloak.authentication.AuthenticatorFactory;
 import org.keycloak.models.AuthenticationExecutionModel;
+import org.keycloak.models.AuthenticationExecutionModel.Requirement;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.KeycloakSessionFactory;
 import org.keycloak.provider.ProviderConfigProperty;
@@ -29,70 +30,70 @@ import java.util.List;
 
 public class URLLoginAuthenticatorFactory implements AuthenticatorFactory {
 
-    public static final String ID = "url-login";
+  public static final String ID = "url-login";
 
-    private static final AuthenticationExecutionModel.Requirement[] REQUIREMENT_CHOICES = {
-        AuthenticationExecutionModel.Requirement.REQUIRED,
-        AuthenticationExecutionModel.Requirement.ALTERNATIVE,
-        AuthenticationExecutionModel.Requirement.OPTIONAL,
-        AuthenticationExecutionModel.Requirement.DISABLED
-    };
+  private static final AuthenticationExecutionModel.Requirement[] REQUIREMENT_CHOICES = {
+      AuthenticationExecutionModel.Requirement.REQUIRED,
+      AuthenticationExecutionModel.Requirement.ALTERNATIVE,
+      Requirement.CONDITIONAL,
+      AuthenticationExecutionModel.Requirement.DISABLED
+  };
 
-    @Override
-    public Authenticator create(KeycloakSession session) {
-        return new URLLoginAuthenticator();
-    }
+  @Override
+  public Authenticator create(KeycloakSession session) {
+    return new URLLoginAuthenticator();
+  }
 
-    @Override
-    public String getId() {
-        return ID;
-    }
+  @Override
+  public String getId() {
+    return ID;
+  }
 
-    @Override
-    public String getReferenceCategory() {
-        return "url";
-    }
+  @Override
+  public String getReferenceCategory() {
+    return "url";
+  }
 
-    @Override
-    public boolean isConfigurable() {
-        return false;
-    }
+  @Override
+  public boolean isConfigurable() {
+    return false;
+  }
 
-    @Override
-    public boolean isUserSetupAllowed() {
-        return true;
-    }
+  @Override
+  public boolean isUserSetupAllowed() {
+    return true;
+  }
 
-    @Override
-    public AuthenticationExecutionModel.Requirement[] getRequirementChoices() {
-        return REQUIREMENT_CHOICES;
-    }
+  @Override
+  public AuthenticationExecutionModel.Requirement[] getRequirementChoices() {
+    return REQUIREMENT_CHOICES;
+  }
 
-    @Override
-    public String getDisplayType() {
-        return "URL Login";
-    }
+  @Override
+  public String getDisplayType() {
+    return "URL Login";
+  }
 
-    @Override
-    public String getHelpText() {
-        return "URL Login";
-    }
+  @Override
+  public String getHelpText() {
+    return "URL Login";
+  }
 
-    @Override
-    public List<ProviderConfigProperty> getConfigProperties() {
-        return null;
-    }
+  @Override
+  public List<ProviderConfigProperty> getConfigProperties() {
+    return null;
+  }
 
-    @Override
-    public void init(Config.Scope config) {
-    }
+  @Override
+  public void init(Config.Scope config) {
+  }
 
-    @Override
-    public void postInit(KeycloakSessionFactory factory) {
-    }
+  @Override
+  public void postInit(KeycloakSessionFactory factory) {
+  }
 
-    @Override
-    public void close() {
-    }
+  @Override
+  public void close() {
+  }
 
 }

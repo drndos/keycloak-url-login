@@ -28,51 +28,52 @@ import org.keycloak.models.utils.KeycloakModelUtils;
 
 public class URLLoginAuthenticator implements Authenticator {
 
-    @Override
-    public void action(AuthenticationFlowContext context) {
+  @Override
+  public void action(AuthenticationFlowContext context) {
+  }
+
+  @Override
+  public void authenticate(AuthenticationFlowContext context) {
+
+    String username = context.getHttpRequest().getUri().getQueryParameters().getFirst("username");
+    String password = context.getHttpRequest().getUri().getQueryParameters().getFirst("password");
+
+    if (username == null || password == null) {
+      context.attempted();
+      return;
     }
 
-    @Override
-    public void authenticate(AuthenticationFlowContext context) {
-
-        String username = context.getHttpRequest().getUri().getQueryParameters().getFirst("username");
-        String password = context.getHttpRequest().getUri().getQueryParameters().getFirst("password");
-
-        if (username == null || password == null) {
-            context.attempted();
-            return;
-        }
-
-        UserModel user = KeycloakModelUtils.findUserByNameOrEmail(context.getSession(), context.getRealm(), username);
-        if (user == null) {
-            context.failure(AuthenticationFlowError.INVALID_CREDENTIALS);
-            return;
-        }
-        context.setUser(user);
-        boolean valid = context.getSession().userCredentialManager().isValid(context.getRealm(), context.getUser(), UserCredentialModel.password(password));
-        if (valid) {
-            context.success();
-        } else {
-            context.failure(AuthenticationFlowError.INVALID_CREDENTIALS);
-        }
+    UserModel user = KeycloakModelUtils.findUserByNameOrEmail(context.getSession(), context.getRealm(), username);
+    if (user == null) {
+      context.failure(AuthenticationFlowError.INVALID_CREDENTIALS);
+      return;
     }
-
-    @Override
-    public boolean requiresUser() {
-        return false;
+    context.setUser(user);
+    boolean valid = context.getSession().userCredentialManager()
+        .isValid(context.getRealm(), context.getUser(), UserCredentialModel.password(password));
+    if (valid) {
+      context.success();
+    } else {
+      context.failure(AuthenticationFlowError.INVALID_CREDENTIALS);
     }
+  }
 
-    @Override
-    public boolean configuredFor(KeycloakSession session, RealmModel realm, UserModel user) {
-        return true;
-    }
+  @Override
+  public boolean requiresUser() {
+    return false;
+  }
 
-    @Override
-    public void setRequiredActions(KeycloakSession session, RealmModel realm, UserModel user) {
-    }
+  @Override
+  public boolean configuredFor(KeycloakSession session, RealmModel realm, UserModel user) {
+    return true;
+  }
 
-    @Override
-    public void close() {
-    }
+  @Override
+  public void setRequiredActions(KeycloakSession session, RealmModel realm, UserModel user) {
+  }
+
+  @Override
+  public void close() {
+  }
 
 }
